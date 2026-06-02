@@ -1785,7 +1785,11 @@
         body: JSON.stringify({ name, phone, company, service, comment })
       });
 
-      if (!res.ok && res.status !== 201) throw new Error('Supabase error');
+      if (!res.ok && res.status !== 201) {
+        const errText = await res.text();
+        console.error('Supabase error:', res.status, errText);
+        throw new Error(`Supabase ${res.status}: ${errText}`);
+      }
 
       // 2. Показываем успех сразу после сохранения в базу
       document.getElementById('orderForm').style.display = 'none';
@@ -1814,9 +1818,10 @@
       });
 
     } catch (err) {
+      console.error('Form submit error:', err);
       btn.disabled = false;
       btn.innerHTML = origText;
-      alert('Ошибка при отправке. Пожалуйста, позвоните нам напрямую: +7 (993) 749-42-23');
+      alert('Ошибка при отправке. Пожалуйста, позвоните нам напрямую: +7 (993) 749-42-23\n\nДеталь: ' + err.message);
     }
   }
 
