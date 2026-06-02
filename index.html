@@ -1795,7 +1795,7 @@
       document.getElementById('orderForm').style.display = 'none';
       document.getElementById('formSuccess').style.display = 'block';
 
-      // 3. Telegram — отправляем в фоне (no-cors: не блокирует даже без хостинга)
+      // 3. Telegram — GET-запрос с параметрами в URL (надёжнее с no-cors)
       const tgText = [
         '📋 Новая заявка с сайта IceCut',
         '',
@@ -1806,16 +1806,12 @@
         comment ? `💬 Комментарий: ${comment}` : null,
       ].filter(Boolean).join('\n');
 
-      const tgParams = new URLSearchParams({
-        chat_id: TG_CHAT_ID,
-        text: tgText
-      });
-
-      fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-        method: 'POST',
-        body: tgParams,
-        mode: 'no-cors'
-      });
+      fetch(
+        `https://api.telegram.org/bot${TG_TOKEN}/sendMessage` +
+        `?chat_id=${encodeURIComponent(TG_CHAT_ID)}` +
+        `&text=${encodeURIComponent(tgText)}`,
+        { mode: 'no-cors' }
+      );
 
     } catch (err) {
       console.error('Form submit error:', err);
