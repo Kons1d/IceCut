@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IceCut — Лазерная резка и металлоконструкции</title>
+  <meta name="description" content="IceCut — лазерная резка листового металла и труб, изготовление металлоконструкций, лазерная сварка, порошковая покраска. Точность. Надёжность. Срок." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ===== VARIABLES ===== */
+    :root {
+      --black:    #0d0d0d;
+      --dark:     #1a1a1a;
+      --gray-900: #222222;
+      --gray-800: #333333;
+      --gray-700: #4a4a4a;
+      --gray-500: #777777;
+      --gray-300: #b0b0b0;
+      --gray-200: #d8d8d8;
+      --gray-100: #f0f0f0;
+      --gray-50:  #f7f7f7;
+      --white:    #ffffff;
+      --accent:   #2a6db5;      /* ice-steel blue — только для CTA */
+      --accent-h: #1d55a0;
+      --radius:   4px;
+      --shadow:   0 4px 24px rgba(0,0,0,0.10);
+      --shadow-lg:0 12px 48px rgba(0,0,0,0.18);
+    }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1, h2, h3, h4 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+    .section-title--white { color: var(--white); }
+    .section-desc {
+      font-size: 1rem;
+      color: var(--gray-500);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+    .section-desc--white { color: var(--gray-300); }
+
+    /* ===== LAYOUT ===== */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    section { padding: 96px 0; }
+    section.tight { padding: 64px 0; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+    }
+    .btn-primary:hover { background: var(--accent-h); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(42,109,181,0.35); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.55);
+    }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+    .btn-dark {
+      background: var(--dark);
+      color: var(--white);
+    }
+    .btn-dark:hover { background: var(--gray-800); transform: translateY(-1px); box-shadow: var(--shadow); }
+    .btn svg { flex-shrink: 0; }
+
+    /* ===== HEADER ===== */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(13,13,13,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: all 0.3s ease;
+    }
+    #header.scrolled {
+      background: rgba(13,13,13,0.99);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: 32px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      background: var(--accent);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-mark svg { width: 22px; height: 22px; }
+    .logo-text {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .logo-sub {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--gray-300);
+      display: block;
+      margin-top: -4px;
+    }
+    nav { display: flex; align-items: center; gap: 8px; }
+    nav a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--gray-300);
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    nav a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+    .header-contacts {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+    .header-phone {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .header-phone:hover { color: var(--accent); }
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: all 0.3s;
+      border-radius: 2px;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 640px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 0;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('пример.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.05);
+      transition: transform 8s ease-out;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.55) 55%,
+        rgba(0,0,0,0.25) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(42,109,181,0.2);
+      border: 1px solid rgba(42,109,181,0.4);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #7bb8f0;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero-title span { color: #7bb8f0; }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 540px;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-stats {
+      position: absolute;
+      bottom: 48px;
+      left: 0; right: 0;
+      z-index: 1;
+    }
+    .hero-stats-inner {
+      display: flex;
+      gap: 0;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      overflow: hidden;
+      max-width: 680px;
+    }
+    .hero-stat {
+      flex: 1;
+      padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-val {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--white);
+      display: block;
+    }
+    .hero-stat-lbl {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    /* ===== SERVICES ===== */
+    #services { background: var(--gray-50); }
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+      gap: 24px;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      overflow: visible;
+    }
+    .service-card {
+      background: var(--white);
+      padding: 40px 36px;
+      position: relative;
+      overflow: visible;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    /* Сдвиг соседних карточек при наведении */
+    .service-card {
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s ease;
+    }
+    .service-card--shifted {
+      transform: translateX(270px) !important;
+    }
+
+    /* Фото появляется справа при наведении */
+    .service-hover-img {
+      position: absolute;
+      top: 0;
+      left: calc(100% + 6px);
+      width: 260px;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+      z-index: 50;
+    }
+    .service-card:hover .service-hover-img {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.3s ease;
+    }
+    .service-card:hover::before { height: 100%; }
+    .service-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); z-index: 1; }
+    .service-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-200);
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+      display: block;
+    }
+    .service-icon {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 20px;
+      color: var(--gray-800);
+    }
+    .service-icon svg { width: 52px; height: 52px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .service-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    .service-text {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+    .service-specs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .service-spec {
+      font-size: 0.8rem;
+      color: var(--gray-700);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .service-spec::before {
+      content: '';
+      width: 14px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ===== ADVANTAGES ===== */
+    #advantages { background: var(--dark); }
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .advantages-img-block { position: relative; }
+    .advantages-img-main {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: var(--radius);
+    }
+    .advantages-img-badge {
+      position: absolute;
+      bottom: -24px;
+      right: -24px;
+      background: var(--accent);
+      color: var(--white);
+      padding: 28px 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+    }
+    .advantages-img-badge .num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      display: block;
+      line-height: 1;
+    }
+    .advantages-img-badge .txt {
+      font-size: 0.8rem;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+    .advantages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-top: 48px;
+    }
+    .advantage-item { display: flex; gap: 20px; }
+    .advantage-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.07);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .advantage-icon svg { width: 22px; height: 22px; stroke: #7bb8f0; fill: none; stroke-width: 1.8; }
+    .advantage-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .advantage-desc {
+      font-size: 0.875rem;
+      color: var(--gray-400, #999);
+      line-height: 1.6;
+    }
+
+    /* ===== EQUIPMENT ===== */
+    #equipment { background: var(--white); }
+    .equipment-header { text-align: center; margin-bottom: 64px; }
+    .equipment-header .section-desc { margin: 0 auto; }
+    .equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .equip-card {
+      background: var(--gray-50);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      transition: box-shadow 0.25s;
+    }
+    .equip-card:hover { box-shadow: var(--shadow); }
+    .equip-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+    .equip-body { padding: 24px; }
+    .equip-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .equip-desc {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+      line-height: 1.55;
+    }
+
+    /* ===== EQUIPMENT MOSAIC ===== */
+    .equip-mosaic {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      grid-template-rows: 280px 280px;
+      gap: 8px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .equip-mosaic-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .equip-mosaic-item--main {
+      grid-row: span 2;
+    }
+    .equip-mosaic-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    .equip-mosaic-item:hover .equip-mosaic-img {
+      transform: scale(1.05);
+    }
+    .equip-mosaic-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 18px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      transition: opacity 0.3s;
+    }
+    .equip-mosaic-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    .equip-mosaic-spec {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.65);
+      margin-top: 4px;
+    }
+    @media (max-width: 768px) {
+      .equip-mosaic {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 200px 200px 200px;
+      }
+      .equip-mosaic-item--main {
+        grid-column: span 2;
+        grid-row: span 1;
+      }
+    }
+    @media (max-width: 480px) {
+      .equip-mosaic {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .equip-mosaic-item, .equip-mosaic-item--main {
+        grid-column: span 1;
+        grid-row: span 1;
+        height: 220px;
+      }
+    }
+
+    /* ===== PROCESS ===== */
+    #process { background: var(--gray-50); }
+    .process-header { text-align: center; margin-bottom: 64px; }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: var(--gray-200);
+      z-index: 0;
+    }
+    .process-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .step-num {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      transition: all 0.25s;
+    }
+    .process-step:hover .step-num {
+      background: var(--accent);
+      color: var(--white);
+      border-color: var(--accent);
+    }
+    .step-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      line-height: 1.5;
+    }
+
+    /* ===== GALLERY ===== */
+    #gallery { background: var(--dark); padding: 80px 0; }
+    .gallery-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 4px;
+    }
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .gallery-item:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      min-height: 240px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    .gallery-item:first-child .gallery-img { min-height: 480px; }
+    .gallery-item:hover .gallery-img { transform: scale(1.05); }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(42,109,181,0.25); }
+    .gallery-overlay-icon {
+      opacity: 0;
+      transform: scale(0.7);
+      transition: all 0.3s;
+      color: white;
+    }
+    .gallery-overlay-icon svg { width: 40px; height: 40px; stroke: white; fill: none; stroke-width: 1.5; }
+    .gallery-item:hover .gallery-overlay-icon { opacity: 1; transform: scale(1); }
+
+    /* ===== ORDER ===== */
+    #order { background: var(--white); }
+    .order-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .order-info { padding-top: 8px; }
+    .order-features {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .order-feature {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.9rem;
+      color: var(--gray-700);
+    }
+    .order-feature-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      background: var(--gray-50);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .order-feature-icon svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2; }
+    .form-block {
+      background: var(--gray-50);
+      padding: 44px 40px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+    }
+    .form-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .form-subtitle {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      margin-bottom: 32px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--dark);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23777' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+    .form-note {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 32px 0;
+    }
+    .form-success .check-icon {
+      width: 64px;
+      height: 64px;
+      background: #e6f4ea;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .form-success .check-icon svg { width: 28px; height: 28px; stroke: #2d7a47; fill: none; stroke-width: 2.5; }
+    .form-success h3 { font-size: 1.3rem; color: var(--dark); margin-bottom: 8px; }
+    .form-success p { font-size: 0.9rem; color: var(--gray-500); }
+
+    /* ===== CONTACTS ===== */
+    #contacts { background: var(--gray-900); padding: 80px 0; }
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 64px;
+    }
+    .contacts-brand .logo-text { font-size: 1.8rem; }
+    .contacts-desc {
+      font-size: 0.875rem;
+      color: var(--gray-300);
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 300px;
+    }
+    .contacts-col-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 20px;
+    }
+    .contacts-list { display: flex; flex-direction: column; gap: 12px; }
+    .contact-item { display: flex; gap: 12px; align-items: flex-start; }
+    .contact-item-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .contact-item-icon svg { width: 18px; height: 18px; stroke: var(--gray-500); fill: none; stroke-width: 1.8; }
+    .contact-item-text {
+      font-size: 0.875rem;
+      color: var(--gray-300);
+      line-height: 1.5;
+    }
+    .contact-item-text a { color: var(--white); font-weight: 500; }
+    .contact-item-text a:hover { color: var(--accent); }
+    .services-nav { display: flex; flex-direction: column; gap: 10px; }
+    .services-nav a {
+      font-size: 0.875rem;
+      color: var(--gray-300);
+      transition: color 0.2s, padding-left 0.2s;
+    }
+    .services-nav a:hover { color: var(--white); padding-left: 6px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--black);
+      padding: 20px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+    }
+    .footer-copy span { color: var(--gray-300); }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.93);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+    .lightbox-close svg { width: 20px; height: 20px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 999;
+      flex-direction: column;
+      padding: 100px 32px 40px;
+      gap: 8px;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--white);
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .mobile-menu .mobile-phone {
+      font-size: 1.4rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-top: 24px;
+      border-bottom: none;
+    }
+
+    /* ===== BACK TO TOP ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 48px;
+      height: 48px;
+      background: var(--dark);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.3s;
+      z-index: 100;
+    }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent); border-color: var(--accent); }
+    .back-to-top svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* ===== SCROLL PROGRESS BAR ===== */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #7bb8f0);
+      z-index: 9999;
+      transition: width 0.08s linear;
+    }
+
+    /* ===== RIPPLE ===== */
+    @keyframes btn-ripple {
+      from { transform: scale(0); opacity: 0.5; }
+      to   { transform: scale(2.5); opacity: 0; }
+    }
+    .btn { position: relative; overflow: hidden; }
+    .btn-ripple-el {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      pointer-events: none;
+      animation: btn-ripple 0.55s ease-out forwards;
+      transform-origin: center;
+    }
+
+    /* ===== ADVANTAGE ITEMS ===== */
+    .advantage-item {
+      transition: transform 0.25s ease;
+    }
+    .advantage-item:hover {
+      transform: translateX(10px);
+    }
+    .advantage-item:hover .advantage-icon {
+      background: rgba(42,109,181,0.25);
+      transition: background 0.25s;
+    }
+
+    /* ===== HERO STATS ===== */
+    .hero-stat {
+      transition: background 0.25s ease;
+      cursor: default;
+    }
+    .hero-stat:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .hero-stat:hover .hero-stat-val {
+      color: #7bb8f0;
+      transition: color 0.25s;
+    }
+
+    /* ===== PROCESS STEPS ===== */
+    .process-step {
+      transition: transform 0.25s ease;
+    }
+    .process-step:hover {
+      transform: translateY(-6px);
+    }
+
+    /* ===== CONTACTS ITEMS ===== */
+    .contact-item {
+      transition: transform 0.2s ease;
+    }
+    .contact-item:hover {
+      transform: translateX(6px);
+    }
+
+    /* ===== ORDER FEATURES ===== */
+    .order-feature {
+      transition: transform 0.2s ease, color 0.2s;
+    }
+    .order-feature:hover {
+      transform: translateX(6px);
+      color: var(--dark);
+    }
+
+    /* ===== SECTION TITLE UNDERLINE ===== */
+    .section-title {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .advantages-grid { gap: 48px; }
+      .equipment-grid { grid-template-columns: 1fr 1fr; }
+      .contacts-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .process-steps { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+      .process-steps::before { display: none; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 64px 0; }
+      nav, .header-contacts .btn { display: none; }
+      .burger { display: flex; }
+      .header-phone { font-size: 0.95rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .advantages-grid { grid-template-columns: 1fr; }
+      .advantages-img-main { height: 300px; }
+      .advantages-img-badge { right: 0; bottom: -16px; }
+      .equipment-grid { grid-template-columns: 1fr; }
+      .order-grid { grid-template-columns: 1fr; gap: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-block { padding: 28px 24px; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:first-child { grid-column: span 2; }
+      .gallery-item:first-child .gallery-img { min-height: 300px; }
+      .contacts-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-stats-inner { flex-direction: column; gap: 0; }
+      .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .hero-stat:last-child { border-bottom: none; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .services-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero-title { font-size: 2rem; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { text-align: center; justify-content: center; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item:first-child { grid-column: span 1; }
+      .process-steps { grid-template-columns: 1fr; }
+      .form-block { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header id="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="#hero" class="logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="5 3 19 3 19 21"/>
+            <polyline points="5 3 5 21"/>
+            <line x1="5" y1="12" x2="15" y2="12"/>
+          </svg>
+        </div>
+        <div>
+          <span class="logo-text">IceCut</span>
+          <span class="logo-sub">Металлообработка</span>
+        </div>
+      </a>
+
+      <nav>
+        <a href="#services">Услуги</a>
+        <a href="#advantages">О компании</a>
+        <a href="#equipment">Оборудование</a>
+        <a href="#order">Заказать</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+
+      <div class="header-contacts">
+        <a href="tel:+79937494223" class="header-phone">+7 (993) 749-42-23</a>
+        <a href="#order" class="btn btn-primary" style="padding:10px 22px;font-size:0.83rem;">
+          Получить расчёт
+        </a>
+      </div>
+
+      <div class="burger" id="burger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="toggleMenu()">Услуги</a>
+  <a href="#advantages" onclick="toggleMenu()">О компании</a>
+  <a href="#equipment" onclick="toggleMenu()">Оборудование</a>
+  <a href="#order" onclick="toggleMenu()">Заказать</a>
+  <a href="#contacts" onclick="toggleMenu()">Контакты</a>
+  <a href="tel:+79937494223" class="mobile-phone">+7 (993) 749-42-23</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">Лазерная металлообработка</div>
+      <h1 class="hero-title">
+        Режем. Варим.<br/>
+        <span>Красим.</span>
+      </h1>
+      <p class="hero-desc">
+        Полный цикл металлообработки на собственном оборудовании — лазерная резка листов и труб,
+        изготовление металлоконструкций, сварка и порошковая покраска.
+      </p>
+      <div class="hero-actions">
+        <a href="#order" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+          </svg>
+          Заказать звонок
+        </a>
+        <a href="#services" class="btn btn-outline">
+          Наши услуги
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="container">
+      <div class="hero-stats-inner">
+        <div class="hero-stat">
+          <span class="hero-stat-val">8+</span>
+          <span class="hero-stat-lbl">Лет на рынке</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-val">1200+</span>
+          <span class="hero-stat-lbl">Выполненных заказов</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-val">6 кВт</span>
+          <span class="hero-stat-lbl">Мощность лазера</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-val">1 день</span>
+          <span class="hero-stat-lbl">Минимальный срок</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <span class="section-label">Что мы делаем</span>
+        <h2 class="section-title">Наши услуги</h2>
+      </div>
+      <p class="section-desc">
+        Полный цикл металлообработки под одной крышей — от проектирования до покраски готового изделия.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <!-- 1 -->
+      <div class="service-card fade-in">
+        <span class="service-num">01</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="6" width="36" height="36" rx="2"/>
+            <path d="M14 24l6 6 14-14"/>
+            <circle cx="36" cy="12" r="4" fill="currentColor" opacity=".15"/>
+          </svg>
+        </div>
+        <div class="service-name">Лазерная резка листового металла</div>
+        <p class="service-text">
+          Раскрой листового металла любой сложности. Сталь, нержавейка, алюминий.
+          Высокая точность реза — до 0,1 мм. Работаем по чертежам и DXF-файлам.
+        </p>
+        <div class="service-specs">
+          <span class="service-spec">Толщина: до 20 мм (сталь)</span>
+          <span class="service-spec">Лист: до 1500×3000 мм</span>
+          <span class="service-spec">Точность: ±0,1 мм</span>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="service-card fade-in fade-in-delay-1">
+        <span class="service-num">02</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="24" x2="40" y2="24"/>
+            <circle cx="8" cy="24" r="4"/>
+            <circle cx="40" cy="24" r="4"/>
+            <path d="M16 16h16v16H16z" opacity=".2" fill="currentColor"/>
+            <path d="M20 10l8 28M28 10l-8 28" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="service-name">Лазерная резка труб</div>
+        <p class="service-text">
+          Фигурная резка круглых, профильных и прямоугольных труб на специализированном оборудовании.
+          Сложные торцы и пазы — без дополнительной доработки.
+        </p>
+        <div class="service-specs">
+          <span class="service-spec">Диаметр: до 220 мм</span>
+          <span class="service-spec">Длина трубы: до 6000 мм</span>
+          <span class="service-spec">Стенка: до 10 мм</span>
+        </div>
+        <img src="готовая продукция резка.jpg" alt="Готовая продукция лазерной резки" class="service-hover-img" />
+      </div>
+
+      <!-- 3 -->
+      <div class="service-card fade-in fade-in-delay-2">
+        <span class="service-num">03</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 40h40M4 32h40M12 32V16M24 32V8M36 32V20"/>
+            <rect x="8" y="36" width="8" height="4" rx="1"/>
+            <rect x="20" y="36" width="8" height="4" rx="1"/>
+            <rect x="32" y="36" width="8" height="4" rx="1"/>
+          </svg>
+        </div>
+        <div class="service-name">Изготовление металлоконструкций</div>
+        <p class="service-text">
+          Производим металлоконструкции по индивидуальным проектам: рамы, каркасы, кронштейны,
+          лестницы, ограждения, несущие элементы. Полный цикл — от раскроя до сборки.
+        </p>
+        <div class="service-specs">
+          <span class="service-spec">Работаем по чертежам заказчика</span>
+          <span class="service-spec">Серийное и единичное производство</span>
+          <span class="service-spec">Сертифицированные материалы</span>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="service-card fade-in fade-in-delay-1">
+        <span class="service-num">04</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 40l8-8 6 4 12-20 6 8"/>
+            <circle cx="32" cy="16" r="3" fill="currentColor" opacity=".3"/>
+            <path d="M30 18l6-6" stroke-width="2.5"/>
+            <path d="M4 44h40" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="service-name">Лазерная сварка</div>
+        <p class="service-text">
+          Прецизионная лазерная сварка для изделий с высокими требованиями к качеству шва.
+          Минимальные деформации, чистый шов, работа с тонкими материалами.
+        </p>
+        <div class="service-specs">
+          <span class="service-spec">Нержавеющая сталь от 0,5 мм</span>
+          <span class="service-spec">Алюминий и медь</span>
+          <span class="service-spec">Минимальные зоны нагрева</span>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="service-card fade-in fade-in-delay-2">
+        <span class="service-num">05</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 48 48" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 38c0-10 8-18 18-18s14 8 14 18"/>
+            <path d="M18 28l4 10M30 28l-4 10"/>
+            <circle cx="24" cy="16" r="6"/>
+            <path d="M24 10V4M34 14l4-4M14 14l-4-4"/>
+          </svg>
+        </div>
+        <div class="service-name">Порошковая покраска</div>
+        <p class="service-text">
+          Покраска металла в собственной покрасочной камере оборудованием Gema.
+          Более 200 цветов RAL. Высокая стойкость к механическим повреждениям и коррозии.
+        </p>
+        <div class="service-specs">
+          <span class="service-spec">Все цвета RAL</span>
+          <span class="service-spec">Матовое / глянцевое покрытие</span>
+          <span class="service-spec">Камера до 2×1,2×1,5 м</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ADVANTAGES ===== -->
+<section id="advantages">
+  <div class="container">
+    <div class="advantages-grid">
+      <div class="advantages-img-block fade-in">
+        <img src="готовая продукция  покраска.jpg" alt="Металлоконструкция после порошковой покраски" class="advantages-img-main" />
+        <div class="advantages-img-badge">
+          <span class="num">100%</span>
+          <span class="txt">контроль качества<br/>на каждом этапе</span>
+        </div>
+      </div>
+
+      <div class="fade-in fade-in-delay-1">
+        <span class="section-label">Почему IceCut</span>
+        <h2 class="section-title section-title--white">Производство,<br/>которому доверяют</h2>
+        <p class="section-desc section-desc--white">
+          Мы не субподрядчики — весь объём работ выполняем сами на собственном оборудовании.
+          Это гарантирует сроки, качество и справедливую цену.
+        </p>
+
+        <div class="advantages-list">
+          <div class="advantage-item">
+            <div class="advantage-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="advantage-title">Собственное производство</div>
+              <p class="advantage-desc">Лазерный станок, покрасочная камера и сварочный участок — всё под одной крышей. Никаких посредников.</p>
+            </div>
+          </div>
+          <div class="advantage-item">
+            <div class="advantage-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="advantage-title">Сроки без срывов</div>
+              <p class="advantage-desc">Фиксируем срок в договоре. Стандартный заказ — от 1 рабочего дня. Производственный план всегда на контроле.</p>
+            </div>
+          </div>
+          <div class="advantage-item">
+            <div class="advantage-icon">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div>
+              <div class="advantage-title">Прозрачное ценообразование</div>
+              <p class="advantage-desc">Расчёт стоимости за 2 часа после получения чертежей. Цена фиксируется, доплат нет.</p>
+            </div>
+          </div>
+          <div class="advantage-item">
+            <div class="advantage-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div>
+              <div class="advantage-title">Работаем с юридическими лицами</div>
+              <p class="advantage-desc">Все необходимые документы, счета, акты, НДС. Долгосрочные договоры на обслуживание.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EQUIPMENT ===== -->
+<section id="equipment" style="background:var(--dark);padding:96px 0;">
+  <div class="container">
+    <div class="equipment-header fade-in" style="text-align:center;margin-bottom:56px;">
+      <span class="section-label">Парк оборудования</span>
+      <h2 class="section-title section-title--white">Наше оборудование</h2>
+      <p class="section-desc section-desc--white" style="margin:0 auto;">
+        Работаем на технике мировых производителей. Всё в одном цеху — от лазерной резки до покраски.
+      </p>
+    </div>
+
+    <div class="equip-mosaic fade-in">
+      <!-- Большое фото слева — главный станок -->
+      <div class="equip-mosaic-item equip-mosaic-item--main" onclick="openLightbox('резкалистовтруб.jpg')">
+        <img src="резкалистовтруб.jpg" alt="Лазерный комплекс TSP A3015TG" class="equip-mosaic-img" />
+        <div class="equip-mosaic-caption">
+          <div class="equip-mosaic-name">Лазерный комплекс TSP A3015TG</div>
+          <div class="equip-mosaic-spec">6 кВт · листы до 20 мм · трубы до ⌀220 мм</div>
+        </div>
+      </div>
+      <!-- 4 фото справа -->
+      <div class="equip-mosaic-item" onclick="openLightbox('пример.jpg')">
+        <img src="пример.jpg" alt="Рабочая зона лазерного станка" class="equip-mosaic-img" />
+        <div class="equip-mosaic-caption">
+          <div class="equip-mosaic-name">Рабочая зона 1500×3000 мм</div>
+        </div>
+      </div>
+      <div class="equip-mosaic-item" onclick="openLightbox('покраскакамера.jpg')">
+        <img src="покраскакамера.jpg" alt="Покрасочная камера" class="equip-mosaic-img" />
+        <div class="equip-mosaic-caption">
+          <div class="equip-mosaic-name">Покрасочная камера</div>
+        </div>
+      </div>
+      <div class="equip-mosaic-item" onclick="openLightbox('покраскааппарат.jpg')">
+        <img src="покраскааппарат.jpg" alt="Установка порошковой покраски Gema" class="equip-mosaic-img" />
+        <div class="equip-mosaic-caption">
+          <div class="equip-mosaic-name">Установка Gema</div>
+        </div>
+      </div>
+      <div class="equip-mosaic-item" onclick="openLightbox('покраскапистолет.jpg')">
+        <img src="покраскапистолет.jpg" alt="Пистолет Gema для нанесения порошка" class="equip-mosaic-img" />
+        <div class="equip-mosaic-caption">
+          <div class="equip-mosaic-name">Пистолет Gema · 200+ цветов RAL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section id="process" class="tight">
+  <div class="container">
+    <div class="process-header fade-in">
+      <span class="section-label">Как мы работаем</span>
+      <h2 class="section-title">От заявки до готового изделия</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step fade-in">
+        <div class="step-num">1</div>
+        <div class="step-title">Заявка</div>
+        <p class="step-desc">Звонок, письмо или форма на сайте. Отвечаем в течение 30 минут.</p>
+      </div>
+      <div class="process-step fade-in fade-in-delay-1">
+        <div class="step-num">2</div>
+        <div class="step-title">Расчёт стоимости</div>
+        <p class="step-desc">Анализируем чертежи, считаем стоимость за 2 часа. Предложение бесплатно.</p>
+      </div>
+      <div class="process-step fade-in fade-in-delay-2">
+        <div class="step-num">3</div>
+        <div class="step-title">Договор</div>
+        <p class="step-desc">Фиксируем цену, сроки и объём. Работаем без скрытых доплат.</p>
+      </div>
+      <div class="process-step fade-in fade-in-delay-3">
+        <div class="step-num">4</div>
+        <div class="step-title">Производство</div>
+        <p class="step-desc">Резка, сварка, покраска — всё в одном цеху. Контроль на каждом этапе.</p>
+      </div>
+      <div class="process-step fade-in fade-in-delay-4">
+        <div class="step-num">5</div>
+        <div class="step-title">Самовывоз</div>
+        <p class="step-desc">Готовые изделия упакованы и ждут вас на производстве. Сообщим, когда заказ готов.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== ORDER ===== -->
+<section id="order">
+  <div class="container">
+    <div class="order-grid">
+      <div class="order-info fade-in">
+        <span class="section-label">Оставить заявку</span>
+        <h2 class="section-title">Получите расчёт<br/>за 2 часа</h2>
+        <p class="section-desc">
+          Загрузите чертёж или опишите задачу — мы оперативно рассчитаем стоимость
+          и согласуем сроки. Консультация бесплатна.
+        </p>
+        <div class="order-features">
+          <div class="order-feature">
+            <div class="order-feature-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Работаем с DXF, DWG, PDF, STEP
+          </div>
+          <div class="order-feature">
+            <div class="order-feature-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Принимаем заказы от 1 детали
+          </div>
+          <div class="order-feature">
+            <div class="order-feature-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Ответ в течение 2 рабочих часов
+          </div>
+          <div class="order-feature">
+            <div class="order-feature-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Договор и документы для юридических лиц
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-in fade-in-delay-1">
+        <div class="form-block">
+          <div class="form-title">Заявка на расчёт</div>
+          <p class="form-subtitle">Заполните форму — мы свяжемся в течение 30 минут</p>
+
+          <form id="orderForm" onsubmit="submitForm(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Ваше имя *</label>
+                <input type="text" id="name" name="name" placeholder="Иван Петров" required />
+              </div>
+              <div class="form-group">
+                <label for="phone">Телефон *</label>
+                <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="company">Организация</label>
+              <input type="text" id="company" name="company" placeholder="Наименование компании (необязательно)" />
+            </div>
+            <div class="form-group">
+              <label for="service">Услуга *</label>
+              <select id="service" name="service" required>
+                <option value="" disabled selected>Выберите услугу</option>
+                <option>Лазерная резка листового металла</option>
+                <option>Лазерная резка труб</option>
+                <option>Изготовление металлоконструкций</option>
+                <option>Лазерная сварка</option>
+                <option>Порошковая покраска</option>
+                <option>Несколько услуг / полный цикл</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="comment">Описание задачи</label>
+              <textarea id="comment" name="comment" placeholder="Опишите задачу, укажите материал, толщину, количество деталей..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+              Отправить заявку
+            </button>
+            <p class="form-note">
+              Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.
+              Данные используются исключительно для связи с вами.
+            </p>
+          </form>
+
+          <div class="form-success" id="formSuccess">
+            <div class="check-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3>Заявка принята!</h3>
+            <p>Мы свяжемся с вами в течение 30 минут<br/>в рабочее время (пн–пт, 9:00–18:00).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACTS ===== -->
+<section id="contacts">
+  <div class="container">
+    <div class="contacts-grid">
+      <div>
+        <div class="logo">
+          <div class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="5 3 19 3 19 21"/>
+              <polyline points="5 3 5 21"/>
+              <line x1="5" y1="12" x2="15" y2="12"/>
+            </svg>
+          </div>
+          <span class="logo-text">IceCut</span>
+        </div>
+        <p class="contacts-desc">
+          Производственная компания полного цикла металлообработки.
+          Лазерная резка, сварка, металлоконструкции, порошковая покраска.
+        </p>
+      </div>
+
+      <div>
+        <div class="contacts-col-title">Наши услуги</div>
+        <nav class="services-nav">
+          <a href="#services">Лазерная резка листов</a>
+          <a href="#services">Лазерная резка труб</a>
+          <a href="#services">Металлоконструкции</a>
+          <a href="#services">Лазерная сварка</a>
+          <a href="#services">Порошковая покраска</a>
+        </nav>
+      </div>
+
+      <div>
+        <div class="contacts-col-title">Контакты</div>
+        <div class="contacts-list">
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.72A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            </div>
+            <div class="contact-item-text">
+              <a href="tel:+79937494223">+7 (993) 749-42-23</a><br/>
+              Пн–Пт: 9:00 – 18:00
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="contact-item-text">
+              <a href="mailto:64-09-09@mail.ru">64-09-09@mail.ru</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="contact-item-text">
+              г. Череповец,<br/>Кирилловское шоссе, 88к
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-copy">
+        © 2024 <span>IceCut</span>. Все права защищены.
+      </p>
+      <p class="footer-copy">
+        Лазерная резка · Металлоконструкции · Порошковая покраска
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== BACK TO TOP ===== -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img src="" alt="" class="lightbox-img" id="lightboxImg" onclick="event.stopPropagation()" />
+  <button class="lightbox-close" onclick="closeLightbox()">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  // Header scroll effect
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+    document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Hero bg animation
+  window.addEventListener('load', () => {
+    document.getElementById('heroBg').classList.add('loaded');
+  });
+
+  // Mobile menu
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('active');
+    document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('active') ? 'hidden' : '';
+  }
+
+  // Intersection observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Phone mask
+  const phoneInput = document.getElementById('phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function(e) {
+      let val = this.value.replace(/\D/g, '');
+      if (val.startsWith('8')) val = '7' + val.slice(1);
+      if (!val.startsWith('7')) val = '7' + val;
+      val = val.slice(0, 11);
+      let fmt = '+7';
+      if (val.length > 1) fmt += ' (' + val.slice(1, 4);
+      if (val.length >= 4) fmt += ') ' + val.slice(4, 7);
+      if (val.length >= 7) fmt += '-' + val.slice(7, 9);
+      if (val.length >= 9) fmt += '-' + val.slice(9, 11);
+      this.value = fmt;
+    });
+  }
+
+  // Form submit
+  async function submitForm(e) {
+    e.preventDefault();
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    const origText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Отправляем...';
+
+    const name    = document.getElementById('name').value.trim();
+    const phone   = document.getElementById('phone').value.trim();
+    const company = document.getElementById('company').value.trim();
+    const service = document.getElementById('service').value;
+    const comment = document.getElementById('comment').value.trim();
+
+    const SUPABASE_URL = 'https://ydiiiipplqlfbvyhcympv.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ngASgVcGyqPiAyPKI5AEyg_KUrvTLuR';
+    const TG_TOKEN     = '8846418779:AAE-F0k6sQ8gJODvOVk1OgSinvWAT-4HrOE';
+    const TG_CHAT_ID   = '408189218';
+
+    try {
+      // 1. Сохраняем в Supabase
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/gorizont`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ name, phone, company, service, comment })
+      });
+
+      if (!res.ok && res.status !== 201) throw new Error('Supabase error');
+
+      // 2. Показываем успех сразу после сохранения в базу
+      document.getElementById('orderForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+
+      // 3. Telegram — отправляем в фоне (no-cors: не блокирует даже без хостинга)
+      const tgText = [
+        '📋 Новая заявка с сайта IceCut',
+        '',
+        `👤 Имя: ${name}`,
+        `📞 Телефон: ${phone}`,
+        company ? `🏢 Компания: ${company}` : null,
+        `🔧 Услуга: ${service}`,
+        comment ? `💬 Комментарий: ${comment}` : null,
+      ].filter(Boolean).join('\n');
+
+      const tgParams = new URLSearchParams({
+        chat_id: TG_CHAT_ID,
+        text: tgText
+      });
+
+      fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+        method: 'POST',
+        body: tgParams,
+        mode: 'no-cors'
+      });
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = origText;
+      alert('Ошибка при отправке. Пожалуйста, позвоните нам напрямую: +7 (993) 749-42-23');
+    }
+  }
+
+  // Lightbox
+  function openLightbox(src) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Сдвиг соседних карточек услуг при наведении
+  (function() {
+    const COLS = 3;
+    const cards = Array.from(document.querySelectorAll('#services .service-card'));
+
+    cards.forEach((card) => {
+      if (!card.querySelector('.service-hover-img')) return;
+
+      card.addEventListener('mouseenter', () => {
+        const idx = cards.indexOf(card);
+        const col = idx % COLS;
+        const row = Math.floor(idx / COLS);
+
+        cards.forEach((c, i) => {
+          if (Math.floor(i / COLS) === row && i % COLS > col) {
+            c.classList.add('service-card--shifted');
+          }
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        cards.forEach(c => c.classList.remove('service-card--shifted'));
+      });
+    });
+  })();
+
+  // Counter animation
+  function animateCounters() {
+    document.querySelectorAll('.hero-stat-val').forEach(el => {
+      const text = el.textContent;
+      const num = parseInt(text);
+      if (isNaN(num)) return;
+      const suffix = text.replace(/[\d]/g, '');
+      let current = 0;
+      const step = num / 40;
+      const interval = setInterval(() => {
+        current = Math.min(current + step, num);
+        el.textContent = Math.round(current) + suffix;
+        if (current >= num) clearInterval(interval);
+      }, 30);
+    });
+  }
+  // Trigger counters once hero is visible
+  const heroObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      animateCounters();
+      heroObserver.disconnect();
+    }
+  }, { threshold: 0.3 });
+  heroObserver.observe(document.getElementById('hero'));
+
+  // ── SCROLL PROGRESS BAR ──
+  const progressBar = document.createElement('div');
+  progressBar.className = 'scroll-progress';
+  document.body.prepend(progressBar);
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    progressBar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, { passive: true });
+
+  // ── HERO PARALLAX ──
+  const heroBg = document.getElementById('heroBg');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < window.innerHeight * 1.5) {
+      heroBg.style.backgroundPositionY = `calc(40% + ${window.scrollY * 0.25}px)`;
+    }
+  }, { passive: true });
+
+  // ── RIPPLE ON BUTTONS ──
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const r = btn.getBoundingClientRect();
+      const size = Math.max(r.width, r.height);
+      const el = document.createElement('span');
+      el.className = 'btn-ripple-el';
+      el.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;`;
+      btn.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    });
+  });
+
+  // ── MAGNETIC BUTTONS ──
+  document.querySelectorAll('.btn-primary, .btn-dark').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width  / 2) * 0.2;
+      const y = (e.clientY - r.top  - r.height / 2) * 0.2;
+      btn.style.transform = `translate(${x}px, ${y}px) translateY(-1px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+
+  // ── 3D TILT ON EQUIPMENT MOSAIC ──
+  document.querySelectorAll('.equip-mosaic-item').forEach(item => {
+    item.style.transition = 'transform 0.3s ease';
+    item.addEventListener('mousemove', e => {
+      const r = item.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      item.style.transform = `perspective(700px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) scale(1.02)`;
+    });
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = '';
+    });
+  });
+
+  // ── SERVICE CARD NUMBER HIGHLIGHT ON HOVER ──
+  document.querySelectorAll('.service-card').forEach(card => {
+    const num = card.querySelector('.service-num');
+    if (!num) return;
+    card.addEventListener('mouseenter', () => {
+      num.style.transition = 'color 0.3s, font-size 0.3s';
+      num.style.color = 'var(--accent)';
+      num.style.fontSize = '0.85rem';
+    });
+    card.addEventListener('mouseleave', () => {
+      num.style.color = '';
+      num.style.fontSize = '';
+    });
+  });
+
+  // ── SMOOTH LOGO SCALE ON SCROLL ──
+  const logoMark = document.querySelector('.logo-mark');
+  window.addEventListener('scroll', () => {
+    const scale = window.scrollY > 80 ? 0.88 : 1;
+    if (logoMark) logoMark.style.transform = `scale(${scale})`;
+    if (logoMark) logoMark.style.transition = 'transform 0.3s ease';
+  }, { passive: true });
+</script>
+</body>
+</html>
