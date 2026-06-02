@@ -1795,23 +1795,7 @@
       document.getElementById('orderForm').style.display = 'none';
       document.getElementById('formSuccess').style.display = 'block';
 
-      // 3. Telegram — GET-запрос с параметрами в URL (надёжнее с no-cors)
-      const tgText = [
-        '📋 Новая заявка с сайта IceCut',
-        '',
-        `👤 Имя: ${name}`,
-        `📞 Телефон: ${phone}`,
-        company ? `🏢 Компания: ${company}` : null,
-        `🔧 Услуга: ${service}`,
-        comment ? `💬 Комментарий: ${comment}` : null,
-      ].filter(Boolean).join('\n');
-
-      fetch(
-        `https://api.telegram.org/bot${TG_TOKEN}/sendMessage` +
-        `?chat_id=${encodeURIComponent(TG_CHAT_ID)}` +
-        `&text=${encodeURIComponent(tgText)}`,
-        { mode: 'no-cors' }
-      );
+      // Telegram уведомление отправляется через Supabase Edge Function (server-side)
 
     } catch (err) {
       console.error('Form submit error:', err);
